@@ -78,9 +78,12 @@ jobs:
       # Checkout code from git
       # Restore from cache
       # Your job code here
-      cd frontend
-      npm install
-      npm run test
+      - run:
+          name: Frontend test
+          command: |
+              cd frontend
+              npm install
+              npm run test
                 
   test-backend:
     docker:
@@ -90,9 +93,13 @@ jobs:
       # Checkout code from git
       # Restore from cache
       # Your job code here
-      cd backend
-      npm install
-      npm run test
+      - run:
+          name: Backend test
+          command: |
+              cd backend
+              npm install
+              npm run test
+      
             
 #   scan-frontend:
 #     docker:
