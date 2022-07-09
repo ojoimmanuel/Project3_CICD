@@ -43,23 +43,6 @@ jobs:
         - image: 'cimg/base:stable'
       steps:
         - slack/notify:
-            mentions: '@Emmanuel'
-            # custom:
-            #  |
-            #   {
-            #     "blocks": [
-            #       {
-            #         "type": "section",
-            #         "fields": [
-            #           {
-            #             "type": "plain_text",
-            #             "text": "*This is a text notification*",
-            #             "emoji": true
-            #           }
-            #         ]
-            #       }
-            #     ]
-            #   }
             event: pass
 
   build-frontend:
@@ -79,6 +62,8 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
+      - slack/notify:
+            event: pass
 
   build-backend:
     docker:
@@ -345,7 +330,7 @@ jobs:
 workflows:
   default:
     jobs:
-      - notify
+      # - notify
           # context: slack-secrets
       - build-frontend
       - build-backend
