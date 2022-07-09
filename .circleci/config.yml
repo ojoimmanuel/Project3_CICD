@@ -43,22 +43,24 @@ jobs:
         - image: 'cimg/base:stable'
       steps:
         - slack/notify:
-            custom: |
-              {
-                "blocks": [
-                  {
-                    "type": "section",
-                    "fields": [
-                      {
-                        "type": "plain_text",
-                        "text": "*This is a text notification*",
-                        "emoji": true
-                      }
-                    ]
-                  }
-                ]
-              }
-            event: always
+            mentions: '@Emmanuel'
+            # custom:
+            #  |
+            #   {
+            #     "blocks": [
+            #       {
+            #         "type": "section",
+            #         "fields": [
+            #           {
+            #             "type": "plain_text",
+            #             "text": "*This is a text notification*",
+            #             "emoji": true
+            #           }
+            #         ]
+            #       }
+            #     ]
+            #   }
+            event: pass
 
   build-frontend:
     docker:
