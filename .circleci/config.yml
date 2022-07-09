@@ -192,7 +192,7 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --filters "Name=tag:Project,Values=udapeople" \
-              --output text >> /.circleci/ansible/inventory.txt
+              --output text >> Project3_CICD/.circleci/ansible/inventory.txt
             # Your code here
             
       - persist_to_workspace:
