@@ -38,13 +38,6 @@ orbs:
             
 jobs:
 
-  notify:
-      docker:
-        - image: 'cimg/base:stable'
-      steps:
-        - slack/notify:
-            event: pass
-
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -63,7 +56,7 @@ jobs:
           paths: [frontend/node_modules]
           key: frontend-build
       - slack/notify:
-            event: pass
+            event: always
 
   build-backend:
     docker:
