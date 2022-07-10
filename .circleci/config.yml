@@ -221,7 +221,7 @@ jobs:
           name: Install dependencies
           command: |
             apk add --update ansible
-            pip install -y tar gzip
+            yum -y install tar gzip
             pip install awscli
             # Your code here
             
