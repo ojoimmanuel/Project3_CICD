@@ -166,7 +166,7 @@ jobs:
       - run:
           name: Install tar and gzip
           command: |
-              yum -y install tar gzip
+              yum install -y tar gzip
               
       - run:
           name: Ensure back-end infrastructure exists
@@ -215,7 +215,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - Project3_CICD/.circleci/ansible/inventory.txt
             # - destroy-environment     
       - run:
           name: Install dependencies
