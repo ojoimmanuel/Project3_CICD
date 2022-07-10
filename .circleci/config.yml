@@ -192,7 +192,6 @@ jobs:
             aws ec2 describe-instances \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text >> .circleci/ansible/inventory.txt
-      - run: cat .circleci/ansible/inventory.txt  
             
       - persist_to_workspace:
           root: ~/
@@ -214,11 +213,7 @@ jobs:
           fingerprints: ["78:85:89:0e:9f:40:0e:f6:33:b6:00:4e:9e:0a:e0:dd"]
       - attach_workspace:
           at: ~/
-      # - persist_to_workspace:
-      #     root: ~/
-      #     paths:
-      #       - project/.circleci/ansible/inventory.txt
-      #       # - destroy-environment     
+           
       - run:
           name: Install dependencies
           command: |
@@ -389,8 +384,8 @@ workflows:
           #     only: [test-feature-branch]
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       # - deploy-frontend:
       #     requires: [run-migrations]
       # - deploy-backend:
