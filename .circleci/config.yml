@@ -34,7 +34,8 @@ commands:
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             # SUCCESS = $(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/udacity)
-            SUCCESS = $(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            SUCCESS=$(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/migration_${CIRCLE_WORKFLOW_ID:0:7})
+            SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
              cd ~/project/backend
