@@ -227,8 +227,6 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            ls
-            cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yml
             # Your code here
       
@@ -285,6 +283,7 @@ jobs:
             # your code here
             apk add --update ansible
             pip install awscli
+            pip install npm
             
       
       - run:
