@@ -8,6 +8,8 @@ commands:
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     # parameters:
+    #   id:
+    #     type: string
       # Add parameter here   
     steps:
       - run:
@@ -17,26 +19,28 @@ commands:
             # Your code here
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
            
 
-#   revert-migrations:
-#     description: Revert the last migration if successfully run in the current workflow.
-#     parameters:
-#       # Add parameter here     
-#     steps:
-#       - run:
-#           name: Revert migrations
-#           # Add when this will run
-#           command: |
-#             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-#             SUCCESS = 1
-#             if(( $SUCCESS==1 )); 
-#             then
-#             #  cd ~/project/backend
-#             #  npm install
-#             #  Add revert code here. You can find this in the Getting Started section.
-#               exit 1
-#             fi
+  revert-migrations:
+    description: Revert the last migration if successfully run in the current workflow.
+    parameters:
+      # Add parameter here     
+    steps:
+      - run:
+          name: Revert migrations
+          # Add when this will run
+          when: on_fail
+          command: |
+            # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
+            # SUCCESS = $(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/udacity)
+            SUCCESS = $(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/migration_${CIRCLE_WORKFLOW_ID:0:7} 
+            if(( $SUCCESS==1 )); 
+            then
+             cd ~/project/backend
+             npm install
+             npm run migrations:revert     
+            fi
             
 jobs:
 
@@ -260,16 +264,17 @@ jobs:
               # If you are using memstash.io, generate the token "7933fe63-4687-4fa1-8426-aa25aa1730ec" on the website
               # curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
               # If you are using kvdb.io, generate the bucket ID "9GE4jRtKznmVKRfvdBABBe" in your local terminal first
-              curl https://kvdb.io/4F5GukTYuYnLBs21vLj9hB/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              curl https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
             # Your code here
 
       - destroy-environment
+      # - revert-migrations
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
     docker:
-      - image: python:3.7-alpine3.11   
+      - image: amazon/aws-cli
       # Docker image here that supports AWS CLI
     steps:
       # Checkout code from git
@@ -281,9 +286,9 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add --update ansible
-            pip install awscli
-            pip install npm
+            yum install -y tar gzip
+            yum install -y npm 
+            
             
       
       - run:
@@ -308,7 +313,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
        # Here's where you will add some code to rollback on failure    
-      - destroy-environment  
+      - destroy-environment
+      - revert-migrations  
                     
 #   deploy-backend:
 #     docker:
