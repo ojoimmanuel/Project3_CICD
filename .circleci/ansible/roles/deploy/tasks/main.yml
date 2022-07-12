@@ -18,7 +18,7 @@
 - name: "install dependencies."
   become: yes
   apt:
-    name: ["nodejs", "npm"]
+    name: ["nodejs", "npm", "ansible"]
     state: latest
     update_cache: yes
 
@@ -39,7 +39,7 @@
   shell: |
     pm2 stop default
     pm2 start npm -- start
-    
+
 # - name: Creates directory
 #   file:
 #     path: ~/web

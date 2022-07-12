@@ -19,7 +19,7 @@ commands:
             # Your code here
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
+            # aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
            
 
   revert-migrations:
@@ -35,7 +35,6 @@ commands:
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
             # SUCCESS = $(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/udacity)
             SUCCESS=$(curl --insecure https://kvdb.io/HsMyKgBp7S6YjBs9m22LLs/migration_${CIRCLE_WORKFLOW_ID:0:7})
-            SUCCESS = 1
             if(( $SUCCESS==1 )); 
             then
              cd ~/project/backend
@@ -319,6 +318,7 @@ jobs:
             # your code here
             cd frontend
             npm install
+            npm audit fix --audit-level=critical --force
             npm run build
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
