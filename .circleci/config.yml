@@ -365,7 +365,7 @@ jobs:
           command: |
             apk add --update tar gzip
             apk add --update awscli
-            apk add --update ansible
+            pip install ansible
             apk add --update curl
 
       # - run:
@@ -409,21 +409,40 @@ jobs:
 
 #   smoke-test:
 #     docker:
+#       - image: python:3.7-alpine3.11
 #       # Lightweight Docker image 
 #     steps:
 #       # Checkout code from git
+#       - checkout
 #       - run:
 #           name: Install dependencies
 #           command: |
+#              pip install awscli
 #             # your code here
+#
 #       - run:
 #           name: Get backend url
 #           command: |
+#             export BACKEND_IP=$(aws ec2 describe-instances \
+#             --query 'Reservations[*].Instances[*].PublicIpAddress' \
+#             --filters "Name=tag:project,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+#             --output text)
+#             export API_URL="http://${BACKEND_IP}:3030"
+#             echo "API_URL = ${API_URL}"
+#
 #             # your code here
+#
 #       - run:
 #           name: Backend smoke test.
 #           command: |
 #             # your code here
+#             if curl "${API_URL}/api/status" | grep -i "ok"
+#             then
+#              return 0
+#             else
+#              return 1
+#             fi
+#
 #       - run:
 #           name: Frontend smoke test.
 #           command: |
