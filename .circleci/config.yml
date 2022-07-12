@@ -367,6 +367,8 @@ jobs:
             pip install awscli
             pip install ansible
             apk add --update curl
+            apk add --update nodejs npm
+
 
       # - run:
       #     name: Install dependencies
@@ -457,12 +459,19 @@ jobs:
               # fi
 #             # your code here
 #       # Here's where you will add some code to rollback on failure  
+#       - destroy-environment
+#   
+#       - revert-migrations
+
 
 #   cloudfront-update:
 #     docker:
+#       - image: amazon/aws-cli
 #       # Docker image here that supports AWS CLI
 #     steps:
 #       # Checkout code from git
+#       - checkout
+
 #       - run:
 #           name: Install dependencies
 #           command: |
@@ -470,8 +479,17 @@ jobs:
 #       - run:
 #           name: Update cloudfront distribution
 #           command: |
+#             aws cloudformation deploy \
+#             --template-file .circleci/files/cloudfront.yml \
+#             --stack-name InitialStack \
+#             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+#             --tags project=udapeople
 #             # your code here
 #       # Here's where you will add some code to rollback on failure  
+#       - destroy-environment
+#   
+#       - revert-migrations
+
 
 # cleanup:
 #     docker:
