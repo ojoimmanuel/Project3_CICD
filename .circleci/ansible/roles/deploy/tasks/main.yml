@@ -30,6 +30,10 @@
     production: yes
     state: present
 
+- name: Extract backend artifact to remote directory
+    ansible.builtin.unarchive:
+      src: files/artifact.tar.gz
+      dest: ~/
 # - name: Creates directory
 #   file:
 #     path: ~/web
@@ -46,6 +50,5 @@
 
 - name: Executing node
   shell: |
-    tar xvfz artifact.tar.gz
     pm2 stop default
     pm2 start npm -- start
