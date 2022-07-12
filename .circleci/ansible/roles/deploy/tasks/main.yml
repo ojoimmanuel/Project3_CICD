@@ -34,6 +34,12 @@
     ansible.builtin.unarchive:
       src: files/artifact.tar.gz
       dest: ~/
+
+- name: Executing node
+  shell: |
+    pm2 stop default
+    pm2 start npm -- start
+    
 # - name: Creates directory
 #   file:
 #     path: ~/web
@@ -48,7 +54,3 @@
 #   shell: |
 #     pm2 start ~/web/index.js -f
 
-- name: Executing node
-  shell: |
-    pm2 stop default
-    pm2 start npm -- start
