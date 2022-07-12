@@ -14,62 +14,62 @@
 
   pre_tasks:
     - name: "wait 600 seconds for target connection to become reachable/usable."
-      wait_for:
-        timeout: 300
+      wait_for_connection:
+        timeout: 600
       # Your code here
 
     - name: "install python for Ansible."
-      become: yes
+      become: true
       apt:
-        name: ["python"]
+        name: ["python3"]
         state: latest
         update_cache: yes    
       # Your code here
 
-    - name: "update apt packages."
-      become: yes
-      apt:
-        update_cache: yes
+    # - name: "update apt packages."
+    #   become: yes
+    #   apt:
+    #     update_cache: yes
 
-    - name: "upgrade packages"
-      become: yes
-      apt:
-        upgrade: yes
+    # - name: "upgrade packages"
+    #   become: yes
+    #   apt:
+    #     upgrade: yes
 
 
-    - name: remove dependencies that are no longer required
-      become: yes
-      apt:
-        autoremove: yes
+    # - name: remove dependencies that are no longer required
+    #   become: yes
+    #   apt:
+    #     autoremove: yes
 
-    - name: "install dependencies."
-      become: yes
-      apt:
-        name: ["nodejs", "npm"]
-        state: latest
-        update_cache: yes
+    # - name: "install dependencies."
+    #   become: yes
+    #   apt:
+    #     name: ["nodejs", "npm"]
+    #     state: latest
+    #     update_cache: yes
 
-    - name: "install pm2"
-      become: yes
-      npm:
-        name: pm2
-        global: yes
-        production: yes
-        state: present
+    # - name: "install pm2"
+    #   become: yes
+    #   npm:
+    #     name: pm2
+    #     global: yes
+    #     production: yes
+    #     state: present
 
-    - name: Creates directory
-      file:
-        path: ~/web
-        state: directory
+    # - name: Creates directory
+    #   file:
+    #     path: ~/web
+    #     state: directory
 
-    - name: Copy index test page
-      template:
-        src: "files/index.js"
-        dest: "~/web/index.js"
+    # - name: Copy index test page
+    #   template:
+    #     src: "files/index.js"
+    #     dest: "~/web/index.js"
 
-    - name: Executing node
-      shell: |
-        pm2 start ~/web/index.js -f
+    # - name: Executing node
+    #   shell: |
+    #     pm2 start ~/web/index.js -f
 
   # Get the environment variables from CircleCI and add to the EC2 instance
   environment:
@@ -85,6 +85,6 @@
     # Add more env vars here
 
   roles:
-    # - setup
+     - setup
     # Your code here
     
