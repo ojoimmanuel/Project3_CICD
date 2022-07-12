@@ -31,9 +31,9 @@
     state: present
 
 - name: Extract backend artifact to remote directory
-    ansible.builtin.unarchive:
-      src: files/artifact.tar.gz
-      dest: ~/
+  ansible.builtin.unarchive:
+    src: files/artifact.tar.gz
+    dest: ~/
 
 - name: Executing node
   shell: |
