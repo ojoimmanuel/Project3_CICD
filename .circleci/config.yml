@@ -275,30 +275,49 @@ jobs:
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
+
     docker:
-      - image: amazon/aws-cli
-      # Docker image here that supports AWS CLI
+      - image: python:3.7-alpine3.16
     steps:
-      # Checkout code from git
       - checkout
+      - attach_workspace:
+          at: ~/
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Install node and npm dependencies
+          command:  apk add --update nodejs npm
+      - run: 
+          name: Install  ansible and awscli
+          command: |
+            apk add --update ansible
+            pip install awscli
+            apk add --update curl
+
+    # docker:
+    #   - image: amazon/aws-cli
+    #   # Docker image here that supports AWS CLI
+    # steps:
+    #   # Checkout code from git
+    #   - checkout
       
            
-      - run:
-          name: Install dependencies
-          command: |
-            # your code here
-            yum update -y
-            yum install -y tar gzip
-            curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
-            yum install -y nodejs
-            # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            # . ~/.nvm/nvm.sh
-            # nvm install --lts
-            # node -e "console.log('Running Node.js ' + process.version)"
+    #   - run:
+    #       name: Install dependencies
+    #       command: |
+    #         # your code here
+    #         yum update -y
+    #         yum install -y tar gzip
+    #         curl -sL https://rpm.nodesource.com/setup_13.x |  bash -
+    #         yum install -y nodejs
+    #         # curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    #         # . ~/.nvm/nvm.sh
+    #         # nvm install --lts
+    #         # node -e "console.log('Running Node.js ' + process.version)"
 
 
-      - attach_workspace:
-          at: ~/      
+    #   - attach_workspace:
+    #       at: ~/      
       
       - run:
           name: Get backend url
