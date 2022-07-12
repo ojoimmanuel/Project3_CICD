@@ -350,6 +350,7 @@ jobs:
                     
   deploy-backend:
     docker:
+      # - image: python:3.10-alpine3.16
       - image: amazon/aws-cli
       # Docker image here that supports Ansible
     steps:
@@ -358,7 +359,11 @@ jobs:
       # Add ssh keys with fingerprint
       - add_ssh_keys:
           fingerprints: ["78:85:89:0e:9f:40:0e:f6:33:b6:00:4e:9e:0a:e0:dd"]
+      
       # attach workspace
+      - attach_workspace:
+          at: ~/
+
       - run:
           name: Install dependencies
           command: |
