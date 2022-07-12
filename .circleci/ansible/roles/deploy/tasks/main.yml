@@ -18,7 +18,7 @@
 - name: "install dependencies."
   become: yes
   apt:
-    name: ["nodejs", "npm", "ansible"]
+    name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
 
@@ -37,6 +37,7 @@
 
 - name: Executing node
   shell: |
+    npm install
     pm2 stop default
     pm2 start npm -- start
 

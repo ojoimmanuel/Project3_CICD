@@ -19,7 +19,7 @@ commands:
             # Your code here
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            # aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}
            
 
   revert-migrations:
@@ -270,7 +270,8 @@ jobs:
             # Your code here
 
       - destroy-environment
-      # - revert-migrations
+
+      - revert-migrations
      # Here's where you will add some code to rollback on failure      
 
   deploy-frontend:
@@ -324,6 +325,7 @@ jobs:
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
        # Here's where you will add some code to rollback on failure    
       - destroy-environment
+
       - revert-migrations  
                     
   deploy-backend:
@@ -367,6 +369,7 @@ jobs:
             # your code here
 
       - destroy-environment
+      
       - revert-migrations
 #       # Here's where you will add some code to rollback on failure  
 
