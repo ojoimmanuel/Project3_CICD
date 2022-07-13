@@ -371,10 +371,10 @@ jobs:
           command: |
             # apk add --update --no-cache tar gzip nodejs npm aws-cli curl ansible
 
-            apk add --update --no-cache curl tar gzip
+            apk add --update --no-cache curl tar gzip nodejs npm
             apk add aws-cli
             apk add ansible
-            apk add --update nodejs npm
+            # apk add --update nodejs npm
 
 
       # - run:
