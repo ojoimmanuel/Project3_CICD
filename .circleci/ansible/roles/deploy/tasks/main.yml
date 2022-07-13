@@ -34,7 +34,7 @@
   become: yes
   ansible.builtin.unarchive:
     src: files/artifact.tar.gz
-    dest: ~/
+    dest: .
 
 - name: Executing node
   become: yes
