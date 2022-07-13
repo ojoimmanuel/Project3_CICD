@@ -448,7 +448,7 @@ jobs:
              apk add --update nodejs npm
 
       - run:
-          name: Get backend url
+          name: Get backend url and smoke test
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances \
             --query 'Reservations[*].Instances[*].PublicIpAddress' \
@@ -456,19 +456,26 @@ jobs:
             --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-
-            # your code here
-
-      - run:
-          name: Backend smoke test.
-          command: |
-            # your code here
+            sleep 3m
             if curl "${API_URL}/api/status" | grep "ok"
             then
              return 0
             else
              return 1
             fi
+
+            # your code here
+
+      # - run:
+      #     name: Backend smoke test.
+      #     command: |
+      #       # your code here
+      #       if curl "${API_URL}/api/status" | grep "ok"
+      #       then
+      #        return 0
+      #       else
+      #        return 1
+      #       fi
 
       - run:
           name: Frontend smoke test.
