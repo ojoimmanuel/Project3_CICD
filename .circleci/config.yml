@@ -362,14 +362,20 @@ jobs:
       - add_ssh_keys:
           fingerprints: ["78:85:89:0e:9f:40:0e:f6:33:b6:00:4e:9e:0a:e0:dd"]
       
+      - attach_workspace:
+          at: ~/
+
+
       - run:
           name: Install dependencies
           command: |
-            apk add --update tar gzip
-            pip install awscli
-            pip install ansible
-            apk add --update curl
-            apk add --update nodejs npm
+            apk add --update --no-cache tar gzip nodejs npm aws-cli curl ansible
+
+            # apk add --update tar gzip
+            # pip install awscli
+            # pip install ansible
+            # apk add --update curl
+            # apk add --update nodejs npm
 
 
       # - run:
@@ -384,28 +390,43 @@ jobs:
       #       # your code here
 
       # attach workspace
-      - attach_workspace:
-          at: ~/
+      # - attach_workspace:
+      #     at: ~/
+
+      # - run:
+      #     name: Deploy backend
+      #     no_output_timeout: 30m
+      #     command: |
+      #       cd backend
+      #       npm install
+      #       npm run build
+      #       cd ..  
+      #       # zip the directory       
+      #       tar -C backend -czvf artifact.tar.gz .
+      #       pwd
+      #       mkdir .circleci/ansible/roles/deploy/files/
+      #       mv artifact.tar.gz .circleci/ansible/roles/deploy/files/
+      #       ls -lh
+      #       cd .circleci/ansible
+      #       echo "Contents  of the inventory.txt file is -------"
+      #       cat inventory.txt
+      #       ansible-playbook -i inventory.txt deploy-backend.yml            
+      #       # your code here
 
       - run:
           name: Deploy backend
-          no_output_timeout: 30m
           command: |
             cd backend
-            npm install
+            npm i
             npm run build
-            cd ..  
-            # zip the directory       
+            cd ..
             tar -C backend -czvf artifact.tar.gz .
-            pwd
-            mkdir .circleci/ansible/roles/deploy/files/
-            mv artifact.tar.gz .circleci/ansible/roles/deploy/files/
-            ls -lh
+            mkdir -p ~/project/.circleci/ansible/roles/deploy/files/
+            mv artifact.tar.gz .circleci/ansible/roles/deploy/files/artifact.tar.gz
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
-            ansible-playbook -i inventory.txt deploy-backend.yml            
-            # your code here
+            ansible-playbook -i inventory.txt deploy-backend.yml
 
       - destroy-environment
 
