@@ -369,13 +369,13 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apk add --update --no-cache tar gzip nodejs npm aws-cli curl ansible
+            # apk add --update --no-cache tar gzip nodejs npm aws-cli curl ansible
 
-            # apk add --update tar gzip
-            # pip install awscli
-            # pip install ansible
-            # apk add --update curl
-            # apk add --update nodejs npm
+            apk add --update tar gzip
+            pip install awscli
+            pip install ansible
+            apk add --update curl
+            apk add --update nodejs npm
 
 
       # - run:
