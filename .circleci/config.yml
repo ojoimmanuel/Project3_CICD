@@ -371,10 +371,9 @@ jobs:
           command: |
             # apk add --update --no-cache tar gzip nodejs npm aws-cli curl ansible
 
-            apk add --update --no-cache tar gzip
-            pip install awscli
-            pip install ansible
-            apk add --update curl
+            apk add --update --no-cache curl tar gzip
+            apk add awscli
+            apk add ansible
             apk add --update nodejs npm
 
 
