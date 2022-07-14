@@ -400,8 +400,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: amazon/aws-cli
-      # Docker image here that supports AWS CLI
+      - image: python:3.10-alpine3.16
     steps:
       # Checkout code from git
       - checkout
@@ -409,16 +408,28 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            apk add --update --no-cache curl tar gzip
+            apk add aws-cli
+            apk add --update nodejs npm
             # your code here
       - run:
           name: Update cloudfront distribution
           command: |
+            export OldWorkflowID=$(aws cloudformation \
+              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+              --no-paginate --output text)
+
+            echo $OldWorkflowID >> ~/OldWorkflowID.txt
+            cat ~/OldWorkflowID.txt
+
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
-            --stack-name InitialStack \
-            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --stack-name "InitialStack" \
+            --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
-            # your code here
+
+
+            
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
   
