@@ -1,0 +1,6 @@
+URL01
+https://github.com/ojoimmanuel/Project3_CICD.git
+
+URL02
+http://udapeople-9698539.s3-website-us-east-1.amazonaws.com/#/employees
+
