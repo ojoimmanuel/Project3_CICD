@@ -459,7 +459,7 @@ jobs:
                      --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
              echo Stack names: "${STACKS[@]}"    
             # your code here
-            
+          
       - run:
           name: Remove old stacks and files
           command: |
